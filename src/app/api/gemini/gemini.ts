@@ -21,7 +21,7 @@ export async function fileToGenerativePart(path: string, prompt: string) {
     ]);
 
     if (response.response) {
-      const text = await response.response.text();
+      const text = response.response.text();
       return text;
     } else {
       console.log("Invalid response:", response);

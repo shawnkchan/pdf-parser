@@ -10,13 +10,9 @@ export default function PromptWindow({ pdfUrl }: { pdfUrl: string }) {
     prompt: string
   ) {
     e.preventDefault();
-
-    console.log(prompt);
     const res = await fileToGenerativePart(pdfUrl, prompt);
-    console.log("Response:", res);
     if (typeof res === "string") {
       setGeminiResponse(res);
-      console.log("Gemini response:", geminiResponse);
     }
   }
 

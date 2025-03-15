@@ -10,7 +10,7 @@ function submitFile(e: React.FormEvent, setPdfUrl: (url: string) => void) {
   ) as HTMLInputElement;
 
   if (!fileInput || !fileInput.files || !fileInput.files[0]) {
-    console.log("No file uploaded");
+    console.error("No file uploaded");
     return;
   }
 
@@ -20,10 +20,9 @@ function submitFile(e: React.FormEvent, setPdfUrl: (url: string) => void) {
     method: "POST",
     body: formData,
   })
-    .then((res) => res.json()) // Ensure response is parsed correctly
+    .then((res) => res.json()) 
     .then((data) => {
       if (data.url) {
-        console.log("Uploaded file URL:", data.url);
         setPdfUrl(data.url);
       } else {
         console.error("Invalid response:", data);
