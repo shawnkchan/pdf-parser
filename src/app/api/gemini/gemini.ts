@@ -9,8 +9,8 @@ export async function fileToGenerativePart(path: string, prompt: string) {
   const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
   const pdfResp = await fetch(path).then((res) => res.arrayBuffer());
 
-  await model
-    .generateContent([
+  try {
+    const response = await model.generateContent([
       {
         inlineData: {
           data: Buffer.from(pdfResp).toString("base64"),
@@ -18,13 +18,17 @@ export async function fileToGenerativePart(path: string, prompt: string) {
         },
       },
       prompt,
-    ])
-    .then((res) => {
-      if (res.response) {
-        console.log(res.response.text());
-        return res.response.text();
-      } else {
-        return "No response";
-      }
-    });
+    ]);
+
+    if (response.response) {
+      const text = await response.response.text();
+      return text;
+    } else {
+      console.log("Invalid response:", response);
+      return "Invalid response";
+    }
+  } catch (error) {
+    console.error("Failed to generate content", error);
+    return "Failed to generate content";
+  }
 }
