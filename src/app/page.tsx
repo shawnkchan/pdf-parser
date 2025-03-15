@@ -1,4 +1,28 @@
+"use client";
 import PromptWindow from "@/components/prompt-window";
+
+function submitFile(e: React.FormEvent) {
+  e.preventDefault();
+  const formData = new FormData();
+  const fileInput = document.querySelector(
+    "input[type=file]"
+  ) as HTMLInputElement;
+  if (!fileInput || !fileInput.files || !fileInput.files[0]) {
+    console.log("No file uploaded");
+    return;
+  }
+  formData.append("file", fileInput.files[0]);
+  fetch("/api/upload", {
+    method: "POST",
+    body: formData,
+  }).then((res) => {
+    if (res.ok) {
+      console.log("File uploaded successfully");
+    } else {
+      console.error("Failed to upload file");
+    }
+  });
+}
 
 export default function Home() {
   return (
@@ -13,16 +37,17 @@ export default function Home() {
       {/* User input area */}
       <div className="w-1/3 flex flex-col gap-4 justify-center">
         {/* Upload PDF */}
-        <form className="flex gap-2 flex-row">
+        <form className="flex gap-2 flex-row" onSubmit={submitFile}>
           <input
             type="file"
             name="file"
-            className="border-2 p-2 rounded-md w-[15rem] hover: cursor-grab"
+            accept=".pdf"
+            className="p-2 pl-6 rounded-full w-[15rem] bg-stone-300 hover:bg-stone-500 hover:text-white"
             required
           />
           <button
             type="submit"
-            className="border-2 p-2 rounded-md hover: cursor-grab w-[6rem] bg-stone-300"
+            className="p-2 rounded-full bg-stone-300 hover:bg-stone-500 hover:text-white cursor-grab w-[6rem]"
           >
             Upload
           </button>
