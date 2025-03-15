@@ -33,13 +33,13 @@ function submitFile(e: React.FormEvent, setPdfUrl: (url: string) => void) {
 }
 
 export default function Home() {
-  const [pdfUrl, setPdfUrl] = useState<string | null>(null);
+  const [pdfUrl, setPdfUrl] = useState('');
 
   return (
     <div className="flex flex-row p-2 gap-4 justify-evenly h-screen">
       {/* PDF preview area */}
       <div className="border-2 rounded-md w-full">
-        {pdfUrl ? (
+        {pdfUrl !== '' ? (
           <iframe src={pdfUrl} className="w-full h-full"></iframe>
         ) : (
           <p className="text-2xl">No PDF uploaded</p>
@@ -66,7 +66,7 @@ export default function Home() {
             Upload
           </button>
         </form>
-        <PromptWindow />
+        <PromptWindow pdfUrl={pdfUrl} />
       </div>
     </div>
   );
