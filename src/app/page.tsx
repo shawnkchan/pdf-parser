@@ -36,7 +36,7 @@ export default function Home() {
           }
         })
         .catch((error) => console.error("Failed to upload file", error));
-    }, 2000);
+    }, 1500);
   }
 
   return (
