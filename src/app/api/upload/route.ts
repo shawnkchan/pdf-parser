@@ -14,5 +14,6 @@ export async function POST(req: Request) {
 
   const buffer = await file.arrayBuffer();
   await writeFile(filePath, Buffer.from(buffer));
-  return NextResponse.json({ url: `/pdfs/${uniqueFileName}` });
+  const url = `${req.headers.get("origin")}/uploads/${uniqueFileName}`;
+  return NextResponse.json({ url: url });
 }
