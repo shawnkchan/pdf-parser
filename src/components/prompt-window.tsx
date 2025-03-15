@@ -3,6 +3,7 @@ import React, { useState } from "react";
 
 export default function PromptWindow({ pdfUrl }: { pdfUrl: string }) {
   const [geminiResponse, setGeminiResponse] = useState("");
+  const [waiting, setWaiting] = useState(false);
 
   async function callGemini(
     e: React.FormEvent,
@@ -10,9 +11,12 @@ export default function PromptWindow({ pdfUrl }: { pdfUrl: string }) {
     prompt: string
   ) {
     e.preventDefault();
+    setGeminiResponse("");
+    setWaiting(true);
     const res = await fileToGenerativePart(pdfUrl, prompt);
     if (typeof res === "string") {
       setGeminiResponse(res);
+      setWaiting(false);
     }
   }
 
@@ -20,6 +24,11 @@ export default function PromptWindow({ pdfUrl }: { pdfUrl: string }) {
     <div className="flex flex-col gap-4">
       {/* output area */}
       <div className="w-[30rem] h-[40rem] overflow-y-scroll ">
+        {waiting && (
+          <div className="animate-pulse flex justify-center items-center h-full text-xl font-extrabold">
+              <p>Scanning document...</p>
+          </div>
+        )}
         <p className="break-words whitespace-normal w-full max-w-full">
           {geminiResponse}
         </p>
@@ -40,7 +49,7 @@ export default function PromptWindow({ pdfUrl }: { pdfUrl: string }) {
             type="text"
             name="prompt"
             className="w-full h-full px-4 rounded-full"
-            placeholder="Ask about your PDF"
+            placeholder="Search for insights"
           />
         </form>
       </div>
